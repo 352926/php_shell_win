@@ -20,8 +20,11 @@ namespace php_shell_win
         private void Form1_Load(object sender, EventArgs e)
         {
             this.textBox1.Focus();
-            this.textBox1.Text = "php> ";
+            this.textBox1.Text = "php>>\r\n\r\n";
             this.textBox1.Select(this.textBox1.Text.Length, 0);
+
+            Console.WriteLine(textBox1.Text[0]);
+            Console.WriteLine(textBox1.Text[7]==(char)13);
 
             //设置Form窗体初始化放在屏幕中间
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -32,7 +35,8 @@ namespace php_shell_win
 
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) {
+            if (e.KeyCode == Keys.Enter)
+            {
 
                 //Console.WriteLine(textBox1.Text[textBox1.Text.Length - 2] == (char)13);
                 //Console.WriteLine(textBox1.Text[textBox1.Text.Length - 1] == (char)10);
@@ -43,20 +47,32 @@ namespace php_shell_win
                 //int line_first = textBox1.GetFirstCharIndexFromLine(line_last);
 
                 int line_first = line_last;
-                char c = textBox1.Text[line_first];
+                char c = textBox1.Text[line_first - 1];
                 //c == (char)13
                 //Console.WriteLine(line_first+" "+textBox1.Text.Length);
                 //Console.WriteLine(textBox1.Text[line_first]);
                 //Console.WriteLine(textBox1.Text[0]);
                 while (line_first > 0 && c != (char)13)
                 {
+                    c = textBox1.Text[line_first - 1];
                     line_first--;
-                    c = textBox1.Text[line_first];
                 }
 
+                if (line_first > 0)
+                {
+                    line_first++;
+                }
                 //
                 //int line = textBox1.GetLineFromCharIndex(index);
-                Console.WriteLine(line_first + " " + line_last);
+                Console.WriteLine(line_first + " " + line_last + " " + textBox1.Text.Length);
+
+                String line = "";
+                if (line_last - line_first > 0)
+                {
+                    line = textBox1.Text.Substring(line_first, line_last - line_first);
+                }
+
+                Console.WriteLine(line + " " + line.Length);
             }
         }
     }
